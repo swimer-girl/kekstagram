@@ -30,7 +30,7 @@ const createComments = (index) => ({
 });
 
 const getComments = () =>
-  Array.from({ length: 2 }, (_, commentIndex) =>
+  Array.from({ length: getRandomPositiveInteger(0, 6) }, (_, commentIndex) =>
     createComments(commentIndex + 1)
   );
 
