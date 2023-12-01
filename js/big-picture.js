@@ -2,15 +2,12 @@ const bigPicture = document.querySelector('.big-picture');
 const bodyElement = document.querySelector('body');
 const cancelButton = document.querySelector('#picture-cancel');
 const commentsListElement = bigPicture.querySelector('.social__comments');
-const commentCountElement = bigPicture.querySelector('.social__comment-count');
-const totalCommentCountElement = bigPicture.querySelector('.social__comment-total-count');
-const commentsLoaderElement = bigPicture.querySelector('.comments-loader');
 
 const createComment = ({ avatar, message, name}) => {
   const newComment = document.createElement('li');
   newComment.innerHTML =
     '<img class="social__picture" src="" alt="" width="35" height="35"><p class="social__text"></p>';
-    newComment.classList.add('social__comment');
+  newComment.classList.add('social__comment');
 
   newComment.querySelector('.social__picture').src = avatar;
   newComment.querySelector('.social__picture').alt = name;
@@ -63,11 +60,7 @@ const showBigPicture = (data) => {
   cancelButton.addEventListener('click', onCancelButtonClick);
 
   renderPictureDetails(data);
- renderComments(data.comments);
-}
-
-
-
-
+  renderComments(data.comments);
+};
 
 export {showBigPicture};

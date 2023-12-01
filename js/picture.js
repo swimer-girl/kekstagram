@@ -23,11 +23,8 @@ const renderPictures = (picturesData) => {
   picturesData.forEach((pictureElement) => {
     const picture= createPictureElement(pictureElement);
     fragment.append(picture);
-      });
-    container.append(fragment);
+  });
+  container.append(fragment);
 };
 
 export{renderPictures};
-
-
-
