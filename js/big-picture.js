@@ -4,6 +4,12 @@ const bigPicture = document.querySelector('.big-picture');
 const bodyElement = document.querySelector('body');
 const cancelButton = document.querySelector('#picture-cancel');
 const commentsListElement = bigPicture.querySelector('.social__comments');
+const commentCount = bigPicture.querySelector('.social__comment-count');
+const commentsLoader = document.querySelector('.comments-loader');
+
+const COMMENTS_PER_PORTION = 5;
+
+let commentsShown = 0;
 
 const createComment = ({ avatar, message, name}) => {
   const newComment = document.createElement('li');
@@ -19,14 +25,21 @@ const createComment = ({ avatar, message, name}) => {
 };
 
 const renderComments = (comments) => {
-  commentsListElement.innerHTML = '';
+  commentsShown += COMMENTS_PER_PORTION;
 
+  if (commentsShown >= comments.length) {
+    commentsLoader.classList.add('hidden');
+    commentsShown = comments.length;
+  } else {
+    commentsLoader.classList.remove('hidden');
+  }
   const fragment = document.createDocumentFragment();
-  comments.forEach((comment) => {
-    const commentElement = createComment(comment);
+  for (let i=0; i<commentsShown; i++) {
+    const commentElement = createComment(comments[i]);
     fragment.append(commentElement);
-  });
-
+  }
+  
+  commentsListElement.innerHTML = '';
   commentsListElement.append(fragment);
 };
 
@@ -48,6 +61,7 @@ function onEscKeyDown(evt) {
 const onCancelButtonClick = () => {
   hideBigPicture();
 };
+const onCommentsLoaderClick = () => renderComments();
 
 const renderPictureDetails = (data) => {
   bigPicture.querySelector('.big-picture__img img').src = data.url;
@@ -63,9 +77,12 @@ const showBigPicture = (data) => {
   bodyElement.classList.add('modal-open');
   document.addEventListener('keydown', onEscKeyDown);
   cancelButton.addEventListener('click', onCancelButtonClick);
-
   renderPictureDetails(data);
-  renderComments(data.comments);
+  comments = data.comments;
+  renderComments();
 };
+
+
+commentsLoader.addEventListener('click', onCommentsLoaderClick);
 
 export {showBigPicture};
