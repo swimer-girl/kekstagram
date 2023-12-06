@@ -1,5 +1,4 @@
-import {getRandomArrayElement} from './util.js';
-import {getRandomPositiveInteger} from './util.js';
+import {getRandomArrayElement, getRandomPositiveInteger} from './util.js';
 
 const descriptions = [
   'Море',

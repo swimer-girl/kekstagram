@@ -1,3 +1,5 @@
+import { isEscapeKey } from './util.js';
+
 const bigPicture = document.querySelector('.big-picture');
 const bodyElement = document.querySelector('body');
 const cancelButton = document.querySelector('#picture-cancel');
@@ -28,14 +30,16 @@ const renderComments = (comments) => {
   commentsListElement.append(fragment);
 };
 
+// Функция скрытия формы отображения большого изображения
 const hideBigPicture = () => {
   bigPicture.classList.add('hidden');
   bodyElement.classList.remove('modal-open');
   document.removeEventListener('keydown', onEscKeyDown);
 };
 
+//Фнукция для скрытия окна с большим изображение с клавиатуры
 function onEscKeyDown(evt) {
-  if (evt.key === 'Escape') {
+  if (isEscapeKey(evt)) {
     evt.preventDefault();
     hideBigPicture();
   }
@@ -53,6 +57,7 @@ const renderPictureDetails = (data) => {
   bigPicture.querySelector('.social__caption').textContent = data.description;
 };
 
+//Функция отображении формы большого изображения
 const showBigPicture = (data) => {
   bigPicture.classList.remove('hidden');
   bodyElement.classList.add('modal-open');
