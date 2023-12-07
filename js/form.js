@@ -1,4 +1,6 @@
 import { isEscapeKey } from './util.js';
+import { resetScale } from './scale.js';
+import { resetEffects } from './effect.js';
 
 const form = document.querySelector('.img-upload__form');
 const overlay = document.querySelector('.img-upload__overlay');
@@ -32,6 +34,10 @@ pristine.addValidator(
 
 // Функция скрытия формы отображения окна изображения
 const hideModal = () => {
+  form.reset();
+  resetScale();
+  resetEffects();
+  pristine.reset();
   overlay.classList.add('hidden');
   bodyElement.classList.remove('modal-open');
   document.removeEventListener('keydown', onEscKeyDown);
