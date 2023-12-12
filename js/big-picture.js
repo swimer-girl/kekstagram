@@ -8,8 +8,8 @@ const commentCount = bigPicture.querySelector('.social__comment-count');
 const commentsLoader = document.querySelector('.comments-loader');
 
 const COMMENTS_PER_PORTION = 5;
-
 let commentsShown = 0;
+let comments = [];
 
 const createComment = ({ avatar, message, name}) => {
   const newComment = document.createElement('li');
@@ -24,7 +24,7 @@ const createComment = ({ avatar, message, name}) => {
   return newComment;
 };
 
-const renderComments = (comments) => {
+const renderComments = () => {
   commentsShown += COMMENTS_PER_PORTION;
 
   if (commentsShown >= comments.length) {
@@ -38,9 +38,10 @@ const renderComments = (comments) => {
     const commentElement = createComment(comments[i]);
     fragment.append(commentElement);
   }
-  
+
   commentsListElement.innerHTML = '';
   commentsListElement.append(fragment);
+  commentCount.innerHTML = `${commentsShown} из <span class="comments-count">${comments.length}</span> комментариев`;
 };
 
 // Функция скрытия формы отображения большого изображения
@@ -79,7 +80,9 @@ const showBigPicture = (data) => {
   cancelButton.addEventListener('click', onCancelButtonClick);
   renderPictureDetails(data);
   comments = data.comments;
-  renderComments();
+  if (comments.length > 0) {
+    renderComments();
+  }
 };
 
 

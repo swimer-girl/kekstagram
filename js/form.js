@@ -9,28 +9,24 @@ const fileField = document.querySelector('#upload-file');
 const cancelButton = document.querySelector('#upload-cancel');
 const hashtagField = document.querySelector('.text__hashtags');
 const commentField = document.querySelector('.text__description');
+const submitButton = document.querySelector('.img-upload__submit');
+
+// Лимит на количество хештегов и длину комментария
+const MAX_HASHTAGS = 5;
+const COMMENT_MAX_LENGTH = 140;
 
 const pristine = new Pristine(form, {
   classTo: 'img-upload__element',
   errorTextParent: 'img-upload__element',
   errorTextClass: 'img-upload__error',
 });
-// Валидатор для хэштегов
-const validateHashtags = (value) => {
-  const hashtagsArray = value.split(' ');
-  for (const hashtag of hashtagsArray) {
-    // Проверка каждого хэш-тега на соответствие ограничениям
-    if (!/^#[A-Za-z0-9]{1,19}$/.test(hashtag)) {
-      return false;
-    }
-  }
-  return true;
+
+// Функция для отображения формы редактирования изображения
+const showModal = () => {
+  overlay.classList.remove('hidden');
+  bodyElement.classList.add('modal-open');
+  document.addEventListener('keydown', onEscKeyDown);
 };
-pristine.addValidator(
-  hashtagField, 
-  validateHashtags, 
-  false, 
-  'Хэш-тег должен начинаться с символа # и содержать от 1 до 20 букв или цифр, не более 5 тегов, разделенных пробелами');
 
 // Функция скрытия формы отображения окна изображения
 const hideModal = () => {
@@ -42,6 +38,7 @@ const hideModal = () => {
   bodyElement.classList.remove('modal-open');
   document.removeEventListener('keydown', onEscKeyDown);
 };
+
 //Фнукция для скрытия окна с клавиатуры
 function onEscKeyDown(evt) {
   if (isEscapeKey(evt)) {
@@ -59,31 +56,65 @@ const handleKeyDown = (evt) => {
   }
 };
 
+const onCancelButtonClick = () => {
+  hideModal();
+};
+
+const onFileInputChange = () => {
+  showModal();
+};
+
+// Валидатор для хэштегов
+const validateHashtags = (value) => {
+  const hashtags = value.trim().toLowerCase().split(' ');
+  const isUnique = new Set(hashtags).size === hashtags.length;
+  const isValidFormat = hashtags.every((tag) => /^#[a-zA-Z0-9]{1,19}$/.test(tag));
+  return isUnique && isValidFormat && hashtags.length <= MAX_HASHTAGS;
+};
+pristine.addValidator(
+  hashtagField,
+  validateHashtags,
+  'Некорректный формат хештега'
+);
+
+const validateDescription = (value) => value.length < COMMENT_MAX_LENGTH;
+
+pristine.addValidator(
+  commentField,
+  validateDescription,
+  'Не более 140 символов'
+);
+
 // Назначение обработчиков событий
 hashtagField.addEventListener('keydown', handleKeyDown);
 commentField.addEventListener('keydown', handleKeyDown);
 
-const onCancelButtonClick = () => {
-  hideModal();
+//Блокировка кнопки после нажатия отправить
+const blockSubmitButton = () => {
+  submitButton.disabled = true;
+  submitButton.textContent = 'Отправляется...';
 };
-// Функция для отображения формы редактирования изображения
-const showModal = () => {
-  overlay.classList.remove('hidden');
-  bodyElement.classList.add('modal-open');
-  document.addEventListener('keydown', onEscKeyDown);
-}
+
+const unblockSubmitButton = () => {
+  submitButton.disabled = false;
+  submitButton.textContent = 'Опубликовать';
+};
 
 // Обработчик события изменения значения элемента #upload-file
-fileField.addEventListener('change', showModal);
+fileField.addEventListener('change', onFileInputChange);
 cancelButton.addEventListener('click', onCancelButtonClick);
 // Событие отправки формы
-form.addEventListener('submit', (evt) => {
-  evt.preventDefault();
-  const isValid = pristine.validate();
+const setOnFormSubmit = (cb) => {
+  form.addEventListener('submit', async (evt) => {
+    evt.preventDefault();
+    const isValid = pristine.validate();
 
-  if (isValid) {
-    console.log('Форма валидна. Данные могут быть отправлены.');
-  } else {
-    console.log('Форма содержит неверные значения. Пожалуйста, исправьте ошибки.');
-  }
-});
+    if (isValid) {
+      blockSubmitButton();
+      await cb(new FormData(form));
+      unblockSubmitButton();
+    }
+  });
+};
+
+export {setOnFormSubmit, hideModal};

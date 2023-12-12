@@ -1357,7 +1357,7 @@ main {
           transform: translateX(-50%);
 }
 
-.data-error {
+.error-message {
   position: absolute;
   z-index: 100;
   left: 0;

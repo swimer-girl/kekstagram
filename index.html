@@ -31,7 +31,7 @@
       <section class="img-upload">
         <div class="img-upload__wrapper">
           <h2 class="img-upload__title  visually-hidden">Загрузка фотографии</h2>
-          <form class="img-upload__form" id="upload-select-image" method="post" action=" https://25.javascript.pages.academy/kekstagram" enctype="multipart/form-data" autocomplete="off">
+          <form class="img-upload__form" id="upload-select-image" method="post" action="https://25.javascript.pages.academy/kekstagram" enctype="multipart/form-data" autocomplete="off">
 
             <!-- Изначальное состояние поля для загрузки изображения -->
             <fieldset class="img-upload__start">
@@ -47,7 +47,7 @@
                   <!-- Изменение размера изображения -->
                   <fieldset class="img-upload__scale  scale">
                     <button type="button" class="scale__control  scale__control--smaller">Уменьшить</button>
-                    <input type="text" class="scale__control  scale__control--value" value="55%" title="Image Scale" name="scale" readonly>
+                    <input type="text" class="scale__control  scale__control--value" value="100%" title="Image Scale" name="scale" readonly>
                     <button type="button" class="scale__control  scale__control--bigger">Увеличить</button>
                   </fieldset>
 
@@ -116,8 +116,12 @@
 
                 <!-- Добавление хэш-тегов и комментария к изображению -->
                 <fieldset class="img-upload__text text">
-                  <input class="text__hashtags" name="hashtags" placeholder="#ХэшТег">
-                  <textarea class="text__description" name="description" placeholder="Ваш комментарий..." maxlength="140" data-pristine-maxlength-message="Комментарий не может быть длиннее 140 символов"></textarea>
+                  <div class="img-upload__element">
+                    <input class="text__hashtags" name="hashtags" placeholder="#ХэшТег">
+                  </div>
+                  <div class="img-upload__element">
+                    <textarea class="text__description" name="description" placeholder="Ваш комментарий..."></textarea>
+                  </div>
                 </fieldset>
 
                 <!-- Кнопка для отправки данных на сервер -->
@@ -188,8 +192,8 @@
       </div>
       <ul class="page-footer__contacts  contacts">
         <li><a href="https://twitter.com/htmlacademy_ru" class="contacts__link  contacts__link--twitter">Twitter</a></li>
-        <!-- <li><a href="https://www.instagram.com/htmlacademy/" class="contacts__link  contacts__link--instagram">Instagtam</a></li>
-        <li><a href="https://www.facebook.com/htmlacademy" class="contacts__link  contacts__link--facebook">Facebook</a></li> -->
+        <li><a href="https://www.instagram.com/htmlacademy/" class="contacts__link  contacts__link--instagram">Instagtam</a></li>
+        <li><a href="https://www.facebook.com/htmlacademy" class="contacts__link  contacts__link--facebook">Facebook</a></li>
         <li><a href="https://vk.com/htmlacademy" class="contacts__link  contacts__link--vk">VK</a></li>
       </ul>
     </div>
@@ -222,6 +226,16 @@
       <div class="success__inner">
         <h2 class="success__title">Изображение успешно загружено</h2>
         <button type="button" class="success__button">Круто!</button>
+      </div>
+    </section>
+  </template>
+
+  <!--Сообщение при ошибке загрузки данных-->
+  <template id="error-message">
+    <section class="error-message">
+      <div class="error-message__inner">
+        <h2 class="error-message__title">Произошла ошибка при загрузке данных. Пожалуйста, попробуйте еще раз.</h2>
+        <button type="button" class="error-message__button">Закрыть сообщение об ошибке</button>
       </div>
     </section>
   </template>
