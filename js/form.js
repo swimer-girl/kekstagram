@@ -10,10 +10,13 @@ const cancelButton = document.querySelector('#upload-cancel');
 const hashtagField = document.querySelector('.text__hashtags');
 const commentField = document.querySelector('.text__description');
 const submitButton = document.querySelector('.img-upload__submit');
+const photoPreview = document.querySelector('.img-upload__preview img');
+const effectsPreviews = document.querySelectorAll('.effects__preview');
 
 // Лимит на количество хештегов и длину комментария
 const MAX_HASHTAGS = 5;
 const COMMENT_MAX_LENGTH = 140;
+const FILE_TYPES = ['jpg', 'jpeg', 'png'];
 
 const pristine = new Pristine(form, {
   classTo: 'img-upload__element',
@@ -56,11 +59,24 @@ const handleKeyDown = (evt) => {
   }
 };
 
+const isValidType = (file) => {
+  const fileName = file.name.toLowerCase();
+  return FILE_TYPES.some((it) => fileName.endsWith(it));
+};
+
 const onCancelButtonClick = () => {
   hideModal();
 };
 
 const onFileInputChange = () => {
+  const file = fileField.files[0];
+
+  if (file && isValidType(file)) {
+    photoPreview.src = URL.createObjectURL(file);
+    effectsPreviews.forEach((preview) => {
+      preview.style.backgroundImage = `url('${photoPreview.src}')`;
+    })
+  };
   showModal();
 };
 
