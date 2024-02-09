@@ -8,7 +8,7 @@ const Filter = {
   DEFAULT: 'filter-default',
   RANDOM: 'filter-random',
   DISCUSSED: 'filter-discussed',
-}
+};
 
 let currentFilter = '';
 let pictures = [];
@@ -18,7 +18,7 @@ const turnFilterOn = (loadedPictures) => {
   filterElement.classList.remove('img-filters--inactive');
   pictures = [...loadedPictures];
   currentFilter = Filter.DEFAULT;
-}
+};
 
 //Функция фильтрации
 const randomSort = () => Math.random() - 0.5;
@@ -27,7 +27,7 @@ const discussedSort = (pictureA, pictureB) => pictureB.comments.length - picture
 
 const filterPictures = () => {
   switch (currentFilter) {
-    case Filter.RANDOM: 
+    case Filter.RANDOM:
       return [...pictures].sort(randomSort).slice(0, PICTURES_COUNT);
     case Filter.DISCUSSED:
       return [...pictures].sort(discussedSort);
