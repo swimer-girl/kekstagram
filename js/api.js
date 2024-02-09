@@ -15,7 +15,7 @@ const getData = async (onSuccess, onFail) => {
 const sendData = async (onSuccess, onFail, body) => {
   try {
     const response = await fetch(
-      'https://cors-proxy.fringe.zone/https://25.javascript.pages.academy/kekstagram',
+      'https://25.javascript.pages.academy/kekstagram/data',
       {
         method: 'POST',
         body,
