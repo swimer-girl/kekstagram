@@ -1,6 +1,6 @@
 const getData = async (onSuccess, onFail) => {
   try {
-    const response = await fetch ('https://25.javascript.pages.academy/kekstagram/data');
+    const response = await fetch ('https://cors-anywhere.herokuapp.com/https://25.javascript.pages.academy/kekstagram/data');
 
     if (!response.ok) {
       throw new Error('Не удалось загрузить фотографии');
